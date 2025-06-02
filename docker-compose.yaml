@@ -1,0 +1,22 @@
+services:
+  axon-server:
+    container_name: axon_server
+    image: axoniq/axonserver:latest-jdk-17
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+    networks:
+      - saga
+  postgres:
+    container_name: saga_postgres
+    image: postgres:17.2
+    environment:
+      POSTGRES_DB: productsdb
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - saga
+networks:
+  saga:
