@@ -30,7 +30,7 @@ public class OrderCommandController {
                 .addressId(orderRestModel.getAddressId())
                 .productId(orderRestModel.getProductId())
                 .quantity(orderRestModel.getQuantity())
-                .orderStatus(OrderStatus.CREATED)
+                .orderStatus(OrderStatus.ORDER_CREATED)
                 .build();
 
         commandGateway.sendAndWait(createOrderCommand);
