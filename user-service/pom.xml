@@ -30,6 +30,7 @@
 		<java.version>21</java.version>
 		<axon.version>4.11.2</axon.version>
 		<guava.version>33.4.8-jre</guava.version>
+		<commons.version>1.0.0</commons.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -66,10 +67,16 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>io.axoniq.console</groupId>
 			<artifactId>console-framework-client-spring-boot-starter</artifactId>
 			<version>1.9.2</version>
+		</dependency>-->
+		<dependency>
+			<groupId>com.github.bruce-mig.saga-orchestration-axon</groupId>
+			<artifactId>commons</artifactId>
+			<version>${commons.version}</version>
+
 		</dependency>
 	</dependencies>
 
