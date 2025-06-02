@@ -1,5 +1,7 @@
 package com.github.bruce_mig.order_service.command.api.aggregate;
 
+import com.github.bruce_mig.commons.commands.CompleteOrderCommand;
+import com.github.bruce_mig.commons.events.OrderCompletedEvent;
 import com.github.bruce_mig.order_service.command.api.command.CreateOrderCommand;
 import com.github.bruce_mig.order_service.command.api.events.OrderCreatedEvent;
 import com.github.bruce_mig.commons.utils.OrderStatus;
@@ -39,6 +41,23 @@ public class OrderAggregate {
         this.userId = event.getUserId();
         this.addressId = event.getAddressId();
         this.quantity = event.getQuantity();
+        this.orderStatus = event.getOrderStatus();
+    }
+
+    @CommandHandler
+    public void handle(CompleteOrderCommand completeOrderCommand){
+        // validate command
+        // publish order completed event
+        OrderCompletedEvent orderCompletedEvent = OrderCompletedEvent.builder()
+                .orderStatus(completeOrderCommand.getOrderStatus())
+                .orderId(completeOrderCommand.getOrderId())
+                .build();
+
+        AggregateLifecycle.apply(orderCompletedEvent);
+    }
+
+    @EventSourcingHandler
+    public void on(OrderCompletedEvent event){
         this.orderStatus = event.getOrderStatus();
     }
 }
