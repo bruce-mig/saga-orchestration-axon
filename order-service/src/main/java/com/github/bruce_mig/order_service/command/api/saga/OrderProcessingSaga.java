@@ -15,9 +15,11 @@ import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
+import org.axonframework.modelling.saga.SagaLifecycle;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
@@ -25,20 +27,20 @@ import java.util.UUID;
 @Slf4j
 public class OrderProcessingSaga {
 
-    private final CommandGateway commandGateway;
-    private final QueryGateway queryGateway;
+    @Autowired
+    private transient CommandGateway commandGateway;
+    @Autowired
+    private transient QueryGateway queryGateway;
 
-    public OrderProcessingSaga(CommandGateway commandGateway, QueryGateway queryGateway) {
-        this.commandGateway = commandGateway;
-        this.queryGateway = queryGateway;
-    }
 
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderCreatedEvent event){
         log.info("OrderCreatedEvent in Saga for OrderId: {}", event.getOrderId());
 
-        GetUserPaymentDetailsQuery getUserPaymentDetailsQuery = new GetUserPaymentDetailsQuery(event.getUserId());
+        String userId = event.getUserId();
+
+        GetUserPaymentDetailsQuery getUserPaymentDetailsQuery = new GetUserPaymentDetailsQuery(userId);
         User user = null;
 
         try {
