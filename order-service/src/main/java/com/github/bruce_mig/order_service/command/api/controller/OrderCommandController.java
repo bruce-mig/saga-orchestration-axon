@@ -4,6 +4,7 @@ import com.github.bruce_mig.order_service.command.api.command.CreateOrderCommand
 import com.github.bruce_mig.order_service.command.api.model.OrderRestModel;
 import com.github.bruce_mig.commons.utils.OrderStatus;
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v16/orders")
+@RequestMapping("/api/v1/orders")
 public class OrderCommandController {
 
-    private final CommandGateway commandGateway;
+    @Autowired
+    private transient CommandGateway commandGateway;
 
-    public OrderCommandController(CommandGateway commandGateway) {
-        this.commandGateway = commandGateway;
-    }
 
     @PostMapping
     public ResponseEntity<String> createOrder(@RequestBody OrderRestModel orderRestModel){
