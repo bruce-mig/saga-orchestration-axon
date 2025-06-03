@@ -7,15 +7,48 @@ services:
       - "8124:8124"
     networks:
       - saga
-  postgres:
-    container_name: saga_postgres
+  order_postgres:
+    container_name: order_postgres
     image: postgres:17.2
     environment:
-      POSTGRES_DB: productsdb
+      POSTGRES_DB: orderDB
       POSTGRES_USER: sa
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+    networks:
+      - saga
+  payment_postgres:
+    container_name: payment_postgres
+    image: postgres:17.2
+    environment:
+      POSTGRES_DB: paymentDB
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    networks:
+      - saga
+  shipment_postgres:
+    container_name: shipment_postgres
+    image: postgres:17.2
+    environment:
+      POSTGRES_DB: shipmentDB
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    networks:
+      - saga
+  users_postgres:
+    container_name: users_postgres
+    image: postgres:17.2
+    environment:
+      POSTGRES_DB: userDB
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5435:5432"
     networks:
       - saga
 networks:
