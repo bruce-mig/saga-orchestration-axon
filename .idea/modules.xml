@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/saga-axon.iml" filepath="$PROJECT_DIR$/.idea/saga-axon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/saga-orchestration-axon.iml" filepath="$PROJECT_DIR$/.idea/saga-orchestration-axon.iml" />
     </modules>
   </component>
 </project>
