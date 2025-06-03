@@ -16,5 +16,6 @@ public class Shipment {
     @Id
     private String shipmentId;
     private String orderId;
+    @Enumerated(EnumType.STRING)
     private ShipmentStatus shipmentStatus;
 }
