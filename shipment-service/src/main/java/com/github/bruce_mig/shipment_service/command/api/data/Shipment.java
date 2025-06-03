@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Shipment {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String shipmentId;
     private String orderId;
     private ShipmentStatus shipmentStatus;

@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String orderId;
     private String productId;
     private String userId;

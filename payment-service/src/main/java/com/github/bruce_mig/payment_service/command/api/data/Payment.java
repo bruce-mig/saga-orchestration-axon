@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @Builder
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String paymentId;
     private String orderId;
     private LocalDateTime time;
