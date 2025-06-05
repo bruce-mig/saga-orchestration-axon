@@ -8,6 +8,8 @@ import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
+
 @Component
 public class OrderEventsHandler {
 
@@ -26,15 +28,18 @@ public class OrderEventsHandler {
 
     @EventHandler
     public void on(OrderCompletedEvent event){
-        // todo: if present or else throw
-        Order order = orderRepository.findById(event.getOrderId()).get();
+        String orderId = event.getOrderId();
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order not found with id: " + orderId));
         order.setOrderStatus(event.getOrderStatus());
         orderRepository.save(order);
     }
 
     @EventHandler
     public void on(OrderCancelledEvent event){
-        Order order = orderRepository.findById(event.getOrderId()).get();
+        String orderId = event.getOrderId();
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order not found with id: " + orderId));
         order.setOrderStatus(event.getOrderStatus());
         orderRepository.save(order);
     }
