@@ -31,7 +31,7 @@ public class OrderProcessingSaga {
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderCreatedEvent event){
-        log.info("OrderCreatedEvent in Saga for OrderId: {}", event.getOrderId());
+        log.info("[x] OrderCreatedEvent in Saga for OrderId: {}", event.getOrderId());
 
         String userId = event.getUserId();
 
@@ -60,14 +60,12 @@ public class OrderProcessingSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentProcessedEvent event){
-        log.info("PaymentProcessedEvent in Saga for OrderId: {}", event.getOrderId());
+        log.info("[x] PaymentProcessedEvent in Saga for OrderId: {}", event.getOrderId());
 
         try {
-
             /*if(true){
                 throw new Exception();
             }*/
-
             ShipOrderCommand shipOrderCommand = ShipOrderCommand.builder()
                     .shipmentId(UUID.randomUUID().toString())
                     .orderId(event.getOrderId())
@@ -84,7 +82,7 @@ public class OrderProcessingSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderShippedEvent event){
-        log.info("OrderShippedEvent in Saga for OrderId: {}", event.getOrderId());
+        log.info("[x] OrderShippedEvent in Saga for OrderId: {}", event.getOrderId());
 
         CompleteOrderCommand completeOrderCommand  =CompleteOrderCommand.builder()
                 .orderId(event.getOrderId())
@@ -94,12 +92,24 @@ public class OrderProcessingSaga {
         commandGateway.send(completeOrderCommand);
     }
 
-    @EndSaga
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderCompletedEvent event){
-        log.info("OrderCompletedEvent in Saga for OrderId: {}", event.getOrderId());
+        log.info("[x] OrderCompletedEvent in Saga for OrderId: {}", event.getOrderId());
 
-        // todo : add notification service
+        SendNotificationCommand sendNotificationCommand = SendNotificationCommand.builder()
+                .notificationId(UUID.randomUUID().toString())
+//                .userId()
+                .orderId(event.getOrderId())
+                .build();
+
+        commandGateway.send(sendNotificationCommand);
+
+    }
+
+    @EndSaga
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(NotificationSentEvent event){
+        log.info("[x] NotificationSentEvent in Saga for OrderId: {}", event.getOrderId());
     }
 
     private void cancelOrderCommand(String orderId) {
@@ -109,8 +119,15 @@ public class OrderProcessingSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(OrderCancelledEvent event){
-        log.info("OrderCancelledEvent in Saga for OrderId: {}", event.getOrderId());
-        // todo: send alert cancellation command
+        log.info("[x] OrderCancelledEvent in Saga for OrderId: {}", event.getOrderId());
+        //  send alert cancellation command
+        SendNotificationCommand sendNotificationCommand = SendNotificationCommand.builder()
+                .notificationId(UUID.randomUUID().toString())
+//                .userId()
+                .orderId(event.getOrderId())
+                .build();
+
+        commandGateway.send(sendNotificationCommand);
     }
 
     private void cancelPaymentCommand(PaymentProcessedEvent event) {
@@ -120,7 +137,7 @@ public class OrderProcessingSaga {
 
     @SagaEventHandler(associationProperty = "orderId")
     public void handle(PaymentCancelledEvent event){
-        log.info("PaymentCancelledEvent in Saga for OrderId: {}", event.getOrderId());
+        log.info("[x] PaymentCancelledEvent in Saga for OrderId: {}", event.getOrderId());
 
         cancelOrderCommand(event.getOrderId());
     }
