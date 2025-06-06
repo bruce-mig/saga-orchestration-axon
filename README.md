@@ -117,4 +117,3 @@ This project is open source under the [MIT License](LICENSE).
 
 ---
 
-*Replace image links with the actual filenames in `static/` if they differ.*
